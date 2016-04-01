@@ -49,6 +49,9 @@ The following lists features you can use in dictionary files. These features are
 Japanese. If you want to cooperate on making more advanced dictionaries and want additional features, please talk 
 to me and I will try to implement them. 
 
+Multiple dictionaries can be listed, separated by commas with NO SPACES. resub will create a single output file
+with multiple subtitle tracks, each corresponding with a dictionary/dictionaryname. 
+
 ### 3.1 Known Numbers
 
 To avoid having to list lots and lots of numbers, a line Numeral,#### should be defined. resub will treat all 
@@ -77,3 +80,34 @@ When defining a word in a dictionary file, use i,word or na,word to have resub a
 ### 3.5 Other Words
 
 Just list any other words as a line in the dictionary
+
+## 4. Limitations
+
+resub is far from perfect
+
+### 4.1 Noise and Music
+
+Speech recognition technology is only so good. If a scene is really noise or has strong background music, resub
+will be unable to determine the speech in that scene and cannot remove subtitle lines with known words. 
+
+### 4.2 Signs
+
+resub ignores typeset signs entirely. Plaintext signs might be accidentally removed if they coincide with dialogue
+that contains only known words. 
+
+### 4.3 Bad Timing
+
+resub uses subtitle timing to determine the start and end of phrases. If subtitles start after speech starts, or if
+subtitles start too far in advance of speech starting, resub will be unable to process correctly. 
+
+### 4.4 Subtitles that don't correspond with spoken text
+
+Sometimes translators rearrange what is being said over multiple subtitle lines. resub does not deal with this 
+very well. It will just remove the directly corresponding subtitle line regardless of subtitle content, if the 
+speech content only contains known words. 
+
+### Network Access
+
+resub uses a web service to do speech to text so it does require pretty good internet access. However, it does log
+transcription results in the .ilog file. This means if you want to rerun resub with a different dictionary 
+configuration, internet access is not required (nor are your IBM Watson Speech to Text minutes used). 
