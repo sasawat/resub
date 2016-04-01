@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 
 namespace resub
 {
@@ -25,7 +26,7 @@ namespace resub
 
         public static Tuple<SubtitleCollection, TranscriptionCollection> ilogRead(string fileName)
         {
-            StreamReader sr = new StreamReader(File.OpenRead(fileName));
+            StreamReader sr = new StreamReader(File.OpenRead(fileName), Encoding.UTF8);
             string input = sr.ReadToEnd();
             SubtitleCollection sc = SubtitleCollection.FromFile(input);
             TranscriptionCollection tc = TranscriptionCollection.FromFile(input);
