@@ -48,6 +48,9 @@ namespace resub
                 tc = ilog.Item2;
                 sc = ilog.Item1;
                 ac = new AudioChunkCollection();
+                //Extract tracks still needed
+                MKVToolsharp.extrackTracks(infile, "resub.aud", "resub.ass");
+                
             }
             else //we haven't so we have to start afresh
             {
@@ -80,6 +83,8 @@ namespace resub
             MKVToolsharp.mergeSubtitles(infile, "resubbed.ass", "Resub", outfile);
 
             ac.CleanUp();
+            File.Delete("resub.ass");
+            File.Delete("resub.aud");
                        
             Console.WriteLine("DONE");
         }
