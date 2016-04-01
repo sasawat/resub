@@ -83,7 +83,7 @@ namespace resub
 
             //Create the resuber object
             Console.WriteLine("Loading Dictionary");
-            AllKnownResuber sr = new AllKnownResuber("m1tdic.txt");
+            AllKnownResuber sr = new AllKnownResuber(Config.dictionaries[0]);
 
             Console.WriteLine("resubing!");
             for(int i = 0; i < sc.lines.Count; ++i)
