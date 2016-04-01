@@ -7,11 +7,13 @@ namespace resub
     internal static class Config
     {
         public static string[] dictionaries;
+        public static string[] dictionarynames;
 
         public static void load()
         {
             //Read the config file
             dictionaries = new string[0];
+            dictionarynames = new string[0];
             StreamReader sr = new StreamReader(File.OpenRead("resub.conf"));
             string config = sr.ReadToEnd();
             sr.Close();
@@ -67,6 +69,15 @@ namespace resub
                         dictionaries[dictionaries.Length - 1] = dictionaries[dictionaries.Length - 1].Substring(0, dictionaries[dictionaries.Length - 1].Length - 1);
                     }
                 }
+                else if(parts[0] == "dictionarynames")
+                {
+                    dictionarynames = parts[1].Split(',');
+                    if (dictionarynames[dictionarynames.Length - 1][dictionarynames[dictionarynames.Length - 1].Length - 1] == '\r')
+                    {
+                        dictionarynames[dictionarynames.Length - 1] = dictionarynames[dictionarynames.Length - 1].Substring(0, dictionarynames[dictionarynames.Length - 1].Length - 1);
+                    }
+                    
+                }
             }
             //check for all parameters
             if (
@@ -74,7 +85,8 @@ namespace resub
                 Watson.Pass == "" ||
                 MKVToolsharp.mkvmergepath == "" ||
                 MKVToolsharp.mkvextractpath == "" ||
-                dictionaries.Length == 0
+                dictionaries.Length == 0 ||
+                dictionarynames.Length == 0
                 )
             {
                 Console.WriteLine("Required Configuration Parameters Not Present");

@@ -97,7 +97,7 @@ namespace resub
 
             //Merge everything together
             Console.WriteLine("Creating Output File");
-            MKVToolsharp.mergeSubtitles(infile, "resubbed.ass", "Resub", outfile);
+            MKVToolsharp.mergeSubtitles(infile, "resubbed.ass", Config.dictionarynames[0], outfile);
 
             Console.WriteLine("Cleaning Up");
             ac.CleanUp();
