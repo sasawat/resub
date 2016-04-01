@@ -74,7 +74,7 @@ namespace resub
             posText = -1;
             //Open for reading
             FileStream fs = new FileStream(filename, FileMode.Open, FileAccess.Read);
-            StreamReader sr = new StreamReader(fs, Encoding.UTF8);
+            StreamReader sr = new StreamReader(fs);
             //Loop looking for [Events]
             String temp;
             int num = 0;
