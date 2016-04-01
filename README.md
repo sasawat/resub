@@ -116,8 +116,33 @@ Sometimes translators rearrange what is being said over multiple subtitle lines.
 very well. It will just remove the directly corresponding subtitle line regardless of subtitle content, if the 
 speech content only contains known words. 
 
-### Network Access
+### 4.5 Network Access
 
 resub uses a web service to do speech to text so it does require pretty good internet access. However, it does log
 transcription results in the .ilog file. This means if you want to rerun resub with a different dictionary 
 configuration, internet access is not required (nor are your IBM Watson Speech to Text minutes used). 
+
+## 5. Usage
+
+Just open the application. You can click on it or launch it from the command line. 
+
+### 5.1 Interactive Usage
+
+Just type in the path to the file you want to resub and hit enter. You can also drag and drop the file into 
+the window and it will fill out the path for you. You can hit enter again to let resub decide where the output
+file should go or specify one. Let the program run and make yourself some コーヒー or something. 
+
+![example usage](http://i.imgur.com/M5vLKRc.png)
+
+### 5.2 Command Line Scriptable Usage
+
+resub can be launched with command line arguments so you can write a script that resubs your entire anime 
+archive or something (note that IBM Watson is only free for 1000 minutes a month, and after that it's $0.02 a min)
+
+The format is
+
+> resub.exe input.mkv output.mkv
+
+or if you want to let resub decide what to name your output file
+
+> resub.exe input.mkv
