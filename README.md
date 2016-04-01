@@ -1,6 +1,16 @@
 # resub
 Remove subtitles for lines with only known words in Anime!
 
+Before:
+
+![before](http://i.imgur.com/PKzgzfG.png)
+
+After:
+
+![after](http://i.imgur.com/CBJbls7.png)
+
+すごいですね
+
 ## 1. Dependencies
 
 ### 1.1. IBM Watson 
