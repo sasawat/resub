@@ -14,10 +14,16 @@ namespace resub
             //Load configuration
             Config.load();
 
+            Console.WriteLine("=========================  resub  ========================");
+            Console.WriteLine("University of Michigan");
+            Console.WriteLine("ASIANLAN 124 - First Year Japanese through Anime and Manga");
+            Console.WriteLine("W16 Final Project");
+            Console.WriteLine("Sasawat Prankprakma (psasawat@umich.edu)\n\n");
+
             //Get files
             string infile;
             string outfile;
-            if(args.Length < 2)
+            if(args.Length < 1)
             {
                 Console.Write("Input FileName\n> ");
                 infile = Console.ReadLine();
@@ -31,7 +37,9 @@ namespace resub
             else
             {
                 infile = args[0];
-                outfile = args[1];
+                if (args.Length >= 2) outfile = args[1];
+                else outfile = infile + ".resub.mkv";
+                Console.WriteLine("Input File: " + infile);
             }
 
             TranscriptionCollection tc;
@@ -43,6 +51,7 @@ namespace resub
             //See if we've already done a transcription
             if (File.Exists(infile + ".ilog"))
             {
+                Console.WriteLine("Found ilog from previous resub run");
                 fromfile = true;
                 var ilog = Log.ilogRead(infile + ".ilog");
                 tc = ilog.Item2;
@@ -54,13 +63,17 @@ namespace resub
             }
             else //we haven't so we have to start afresh
             {
+                Console.WriteLine("Demultiplexing Tracks");
                 fromfile = false;
                 //Extract tracks
                 MKVToolsharp.extrackTracks(infile, "resub.aud", "resub.ass");
-                
+
                 //Parse and transcribe
+                Console.WriteLine("Parsing Subtitles");
                 sc = new SubtitleCollection("resub.ass");
+                Console.WriteLine("Processing Audio");
                 ac = new AudioChunkCollection("resub.aud", sc);
+                Console.WriteLine("Transcribing Lines");
                 tc = new TranscriptionCollection(ac);
             }
 
@@ -69,24 +82,30 @@ namespace resub
 
 
             //Create the resuber object
+            Console.WriteLine("Loading Dictionary");
             AllKnownResuber sr = new AllKnownResuber("m1tdic.txt");
 
+            Console.WriteLine("resubing!");
             for(int i = 0; i < sc.lines.Count; ++i)
             {
                 sr.resub(tc[i], sc[i]);
             }
 
             //Output the subtitle file
+            Console.WriteLine("Writing New Subtitles");
             sc.Output();
 
             //Merge everything together
+            Console.WriteLine("Creating Output File");
             MKVToolsharp.mergeSubtitles(infile, "resubbed.ass", "Resub", outfile);
 
+            Console.WriteLine("Cleaning Up");
             ac.CleanUp();
             File.Delete("resub.ass");
             File.Delete("resub.aud");
                        
             Console.WriteLine("DONE");
+            Console.ReadKey();
         }
     }
 }
