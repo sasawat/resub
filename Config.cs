@@ -93,6 +93,13 @@ namespace resub
                 Console.ReadKey();
                 System.Environment.Exit(1);
             }
+            //check for correct dictionary specification
+            if(dictionaries.Length != dictionarynames.Length)
+            {
+                Console.WriteLine("Number of dictionaries and dictionarynames do not correspond");
+                Console.ReadKey();
+                System.Environment.Exit(1);
+            }
             //Create the auth string
             Watson.AuthStr = Convert.ToBase64String(Encoding.ASCII.GetBytes(Watson.User + ":" + Watson.Pass));
         }

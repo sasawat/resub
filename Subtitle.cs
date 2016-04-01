@@ -22,8 +22,8 @@ namespace resub
             Sec = int.Parse(x.Substring(5, 2));
             Frac = int.Parse(x.Substring(8, 2));
         }
-        
-        public static explicit operator double(Timestamp t)
+
+        public static explicit operator double (Timestamp t)
         {
             return 3600.0 * t.Hr + 60.0 * t.Min + t.Sec + t.Frac / 100.0;
         }
@@ -78,17 +78,17 @@ namespace resub
             //Loop looking for [Events]
             String temp;
             int num = 0;
-            while(!sr.EndOfStream)
+            while (!sr.EndOfStream)
             {
                 temp = sr.ReadLine();
                 ++num;
-                if(temp == "[Events]")
+                if (temp == "[Events]")
                 {
                     break;
                 }
             }
             //Loop looking for Format Specifier
-            while(!sr.EndOfStream)
+            while (!sr.EndOfStream)
             {
                 temp = sr.ReadLine();
                 ++num;
@@ -99,12 +99,12 @@ namespace resub
                 }
             }
             //Check format specifier found
-            if(posEnd == -1 || posStart == -1 || posEnd == -1)
+            if (posEnd == -1 || posStart == -1 || posEnd == -1)
             {
                 Console.Error.WriteLine("Subtitle Lacks Format Specifier");
                 Environment.Exit(1);
             }
-            while(!sr.EndOfStream)
+            while (!sr.EndOfStream)
             {
                 temp = sr.ReadLine();
                 ParseLine(temp, num);
@@ -113,7 +113,22 @@ namespace resub
             sr.Close();
         }
 
-        private SubtitleCollection()
+        public SubtitleCollection(SubtitleCollection other)
+        {
+            file = other.file;
+            posStart = other.posStart;
+            posEnd = other.posEnd;
+            posText = other.posText;
+            lines = new List<Line>();
+            lines.AddRange(other.lines);
+        }
+
+        public SubtitleCollection Clone()
+        {
+            return new SubtitleCollection(this);
+        }
+
+        public SubtitleCollection()
         {
             file = "";
             posStart = 1;
@@ -130,13 +145,13 @@ namespace resub
             StreamWriter write = new StreamWriter(ofile);
             int filelnno = 0;
             int sublndx = 0;
-            while(!read.EndOfStream)
+            while (!read.EndOfStream)
             {
                 string subline = read.ReadLine();
-                if(sublndx < lines.Count && filelnno == lines[sublndx].Lnno)
+                if (sublndx < lines.Count && filelnno == lines[sublndx].Lnno)
                 {
                     int comma = 0;
-                    for(int i = 0; i < posText; ++i)
+                    for (int i = 0; i < posText; ++i)
                     {
                         comma = subline.IndexOf(',', comma + 1);
                     }
@@ -155,7 +170,7 @@ namespace resub
             String[] lns = text.Split('\n');
             SubtitleCollection ret = new SubtitleCollection();
             ret.file = "resub.ass";
-            foreach(String ln in lns)
+            foreach (String ln in lns)
             {
                 if (ln == "") break;
                 String[] parts = ln.Split('^');
@@ -164,7 +179,7 @@ namespace resub
             }
             return ret;
         }
-        
+
         private void ParseFormat(String line)
         {
             //Check if actually a format line
@@ -175,17 +190,17 @@ namespace resub
             //Extract the format spec
             String[] fmtspec = line.Substring("Format:".Length).Split(',');
             //Loop through looking for what we need
-            for(int i = 0; i < fmtspec.Length; ++i)
+            for (int i = 0; i < fmtspec.Length; ++i)
             {
-                if(fmtspec[i].Contains("Start"))
+                if (fmtspec[i].Contains("Start"))
                 {
                     posStart = i;
                 }
-                else if(fmtspec[i].Contains("End"))
+                else if (fmtspec[i].Contains("End"))
                 {
                     posEnd = i;
                 }
-                else if(fmtspec[i].Contains("Text"))
+                else if (fmtspec[i].Contains("Text"))
                 {
                     posText = i;
                 }
@@ -195,7 +210,7 @@ namespace resub
         private void ParseLine(String line, int num)
         {
             //Check that it is a Dialogue line
-            if(line.Length < "Dialogue:".Length || line.Substring(0, "Dialogue:".Length) != "Dialogue:")
+            if (line.Length < "Dialogue:".Length || line.Substring(0, "Dialogue:".Length) != "Dialogue:")
             {
                 return;
             }
@@ -205,13 +220,13 @@ namespace resub
             int i = 0;
             int il = 0;
             int at = 0;
-            while((i = data.IndexOf(',', il + 1)) != -1)
+            while ((i = data.IndexOf(',', il + 1)) != -1)
             {
-                if(at == posStart)
+                if (at == posStart)
                 {
                     sstart = data.Substring(il + 1, data.IndexOf(',', il + 1) - il - 1);
                 }
-                else if(at == posEnd)
+                else if (at == posEnd)
                 {
                     send = data.Substring(il + 1, data.IndexOf(',', il + 1) - il - 1);
                 }
@@ -219,7 +234,7 @@ namespace resub
                 ++at;
                 if (at == posText) break;
             }
-            if(i == -1 || at != posText || sstart == "INVALID" || send == "INVALID")
+            if (i == -1 || at != posText || sstart == "INVALID" || send == "INVALID")
             {
                 Console.Error.WriteLine("Warning Invalid Dialogue Line at " + num);
                 return;
@@ -230,7 +245,7 @@ namespace resub
             if (stext.IndexOf("\\pos") != -1) return;
             if (stext.IndexOf("\\blur") != -1) return;
             //Clean up stuff
-            while((i = sstart.IndexOf(' ')) != -1)
+            while ((i = sstart.IndexOf(' ')) != -1)
             {
                 sstart.Remove(i, 1);
             }
@@ -239,18 +254,18 @@ namespace resub
                 send.Remove(i, 1);
             }
             //Okay push back
-            if((double)(new Timestamp(send)) - (double)(new Timestamp(sstart)) < 0.5)
+            if ((double)(new Timestamp(send)) - (double)(new Timestamp(sstart)) < 0.5)
             {
                 //Timeless subtitle
                 return;
             }
-            lines.Add(new Line(sstart, send, stext, num));           
+            lines.Add(new Line(sstart, send, stext, num));
         }
 
         public override string ToString()
         {
             String ret = "";
-            foreach(Line x in lines)
+            foreach (Line x in lines)
             {
                 ret += x + "\n";
             }

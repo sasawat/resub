@@ -82,27 +82,36 @@ namespace resub
 
 
             //Create the resuber object
-            Console.WriteLine("Loading Dictionary");
-            AllKnownResuber sr = new AllKnownResuber(Config.dictionaries[0]);
-
-            Console.WriteLine("resubing!");
-            for(int i = 0; i < sc.lines.Count; ++i)
+            string mergeinto = infile;
+            for (int i = 0; i < Config.dictionaries.Length; ++i)
             {
-                sr.resub(tc[i], sc[i]);
+                Console.WriteLine("Loading Dictionary: " + Config.dictionaries[i]);
+                AllKnownResuber sr = new AllKnownResuber(Config.dictionaries[i]);
+                SubtitleCollection outsub = sc.Clone();
+
+                Console.WriteLine("resubing!");
+                for (int j = 0; j < sc.lines.Count; ++j)
+                {
+                    sr.resub(tc[j], outsub[j]);
+                }
+
+                //Output the subtitle file
+                Console.WriteLine("Writing New Subtitles");
+                outsub.Output();
+
+                //Merge everything together
+                Console.WriteLine("Creating Output File");
+                MKVToolsharp.mergeSubtitles(mergeinto, "resubbed.ass", Config.dictionarynames[i], outfile);
+                if (File.Exists("temp.mkv")) File.Delete("temp.mkv");
+                File.Copy(outfile, "temp.mkv");
+                mergeinto = "temp.mkv";
             }
-
-            //Output the subtitle file
-            Console.WriteLine("Writing New Subtitles");
-            sc.Output();
-
-            //Merge everything together
-            Console.WriteLine("Creating Output File");
-            MKVToolsharp.mergeSubtitles(infile, "resubbed.ass", Config.dictionarynames[0], outfile);
-
             Console.WriteLine("Cleaning Up");
             ac.CleanUp();
             File.Delete("resub.ass");
             File.Delete("resub.aud");
+            File.Delete("resubbed.ass");
+            File.Delete("temp.mkv");
                        
             Console.WriteLine("DONE");
             Console.ReadKey();
