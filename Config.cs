@@ -182,7 +182,7 @@ namespace resub
                 }
             }
             StreamWriter sw = new StreamWriter(File.OpenWrite("resub.conf"));
-            foreach (string line in lines) sw.WriteLine(line + "\n");
+            foreach (string line in lines) sw.WriteLine(line);
             sw.Close();
         }
     }
