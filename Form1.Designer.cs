@@ -37,14 +37,14 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.gbxOpt = new System.Windows.Forms.GroupBox();
-            this.cbxIncludeOrigSubInOutput = new System.Windows.Forms.CheckBox();
-            this.lbxDict = new System.Windows.Forms.ListBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.btnNewDict = new System.Windows.Forms.Button();
             this.btnRemoveDict = new System.Windows.Forms.Button();
+            this.btnNewDict = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.lbxDict = new System.Windows.Forms.ListBox();
+            this.cbxIncludeOrigSubInOutput = new System.Windows.Forms.CheckBox();
             this.btnStart = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.progressBar = new System.Windows.Forms.ProgressBar();
             this.tbxStatus = new System.Windows.Forms.TextBox();
             this.gbxOpt.SuspendLayout();
             this.SuspendLayout();
@@ -119,32 +119,15 @@
             this.gbxOpt.TabStop = false;
             this.gbxOpt.Text = "Options";
             // 
-            // cbxIncludeOrigSubInOutput
+            // btnRemoveDict
             // 
-            this.cbxIncludeOrigSubInOutput.AutoSize = true;
-            this.cbxIncludeOrigSubInOutput.Location = new System.Drawing.Point(7, 20);
-            this.cbxIncludeOrigSubInOutput.Name = "cbxIncludeOrigSubInOutput";
-            this.cbxIncludeOrigSubInOutput.Size = new System.Drawing.Size(198, 17);
-            this.cbxIncludeOrigSubInOutput.TabIndex = 0;
-            this.cbxIncludeOrigSubInOutput.Text = "Include original subtitles in output file";
-            this.cbxIncludeOrigSubInOutput.UseVisualStyleBackColor = true;
-            // 
-            // lbxDict
-            // 
-            this.lbxDict.FormattingEnabled = true;
-            this.lbxDict.Location = new System.Drawing.Point(6, 74);
-            this.lbxDict.Name = "lbxDict";
-            this.lbxDict.Size = new System.Drawing.Size(468, 199);
-            this.lbxDict.TabIndex = 1;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(7, 50);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(117, 13);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "Choose Dictionary Files";
+            this.btnRemoveDict.Location = new System.Drawing.Point(295, 45);
+            this.btnRemoveDict.Name = "btnRemoveDict";
+            this.btnRemoveDict.Size = new System.Drawing.Size(179, 23);
+            this.btnRemoveDict.TabIndex = 4;
+            this.btnRemoveDict.Text = "Remove selected dictionary files";
+            this.btnRemoveDict.UseVisualStyleBackColor = true;
+            this.btnRemoveDict.Click += new System.EventHandler(this.btnRemoveDict_Click);
             // 
             // btnNewDict
             // 
@@ -156,15 +139,32 @@
             this.btnNewDict.UseVisualStyleBackColor = true;
             this.btnNewDict.Click += new System.EventHandler(this.btnNewDict_Click);
             // 
-            // btnRemoveDict
+            // label3
             // 
-            this.btnRemoveDict.Location = new System.Drawing.Point(295, 45);
-            this.btnRemoveDict.Name = "btnRemoveDict";
-            this.btnRemoveDict.Size = new System.Drawing.Size(179, 23);
-            this.btnRemoveDict.TabIndex = 4;
-            this.btnRemoveDict.Text = "Remove selected dictionary files";
-            this.btnRemoveDict.UseVisualStyleBackColor = true;
-            this.btnRemoveDict.Click += new System.EventHandler(this.btnRemoveDict_Click);
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(7, 50);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(117, 13);
+            this.label3.TabIndex = 2;
+            this.label3.Text = "Choose Dictionary Files";
+            // 
+            // lbxDict
+            // 
+            this.lbxDict.FormattingEnabled = true;
+            this.lbxDict.Location = new System.Drawing.Point(6, 74);
+            this.lbxDict.Name = "lbxDict";
+            this.lbxDict.Size = new System.Drawing.Size(468, 199);
+            this.lbxDict.TabIndex = 1;
+            // 
+            // cbxIncludeOrigSubInOutput
+            // 
+            this.cbxIncludeOrigSubInOutput.AutoSize = true;
+            this.cbxIncludeOrigSubInOutput.Location = new System.Drawing.Point(7, 20);
+            this.cbxIncludeOrigSubInOutput.Name = "cbxIncludeOrigSubInOutput";
+            this.cbxIncludeOrigSubInOutput.Size = new System.Drawing.Size(198, 17);
+            this.cbxIncludeOrigSubInOutput.TabIndex = 0;
+            this.cbxIncludeOrigSubInOutput.Text = "Include original subtitles in output file";
+            this.cbxIncludeOrigSubInOutput.UseVisualStyleBackColor = true;
             // 
             // btnStart
             // 
@@ -174,6 +174,7 @@
             this.btnStart.TabIndex = 7;
             this.btnStart.Text = "Start resub";
             this.btnStart.UseVisualStyleBackColor = true;
+            this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
             // label4
             // 
@@ -184,12 +185,12 @@
             this.label4.TabIndex = 8;
             this.label4.Text = "Status";
             // 
-            // progressBar1
+            // progressBar
             // 
-            this.progressBar1.Location = new System.Drawing.Point(546, 92);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(226, 23);
-            this.progressBar1.TabIndex = 9;
+            this.progressBar.Location = new System.Drawing.Point(546, 92);
+            this.progressBar.Name = "progressBar";
+            this.progressBar.Size = new System.Drawing.Size(226, 23);
+            this.progressBar.TabIndex = 9;
             // 
             // tbxStatus
             // 
@@ -206,7 +207,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 361);
             this.Controls.Add(this.tbxStatus);
-            this.Controls.Add(this.progressBar1);
+            this.Controls.Add(this.progressBar);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.btnStart);
             this.Controls.Add(this.gbxOpt);
@@ -246,7 +247,7 @@
         private System.Windows.Forms.Button btnRemoveDict;
         private System.Windows.Forms.Button btnStart;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.TextBox tbxStatus;
     }
 }

@@ -42,9 +42,9 @@ namespace resub
                 System.Environment.Exit(1);
                 return;
             }
-            string config = sr.ReadToEnd();
+            List<string> lines = new List<string>();
+            while (!sr.EndOfStream) lines.Add(sr.ReadLine());
             sr.Close();
-            string[] lines = config.Split('\n');
             foreach (string line in lines)
             {
                 //check for blank line or comment
@@ -182,7 +182,7 @@ namespace resub
                 }
             }
             StreamWriter sw = new StreamWriter(File.OpenWrite("resub.conf"));
-            foreach (string line in lines) sw.WriteLine(line);
+            foreach (string line in lines) sw.WriteLine(line + "\n");
             sw.Close();
         }
     }

@@ -72,5 +72,10 @@ namespace resubS
                 lbxDict.Items.RemoveAt(lbxDict.SelectedIndices[i]);
             }
         }
+
+        private void btnStart_Click(object sender, EventArgs e)
+        {
+            progressBar.Value = 100;
+        }
     }
 }
