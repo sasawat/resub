@@ -9,6 +9,11 @@ namespace resubS
 {
     static class Program
     {
+        static void OnExit(object o, EventArgs e)
+        {
+            Config.save();
+        }
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -17,6 +22,8 @@ namespace resubS
         {
             //Load configuration
             Config.load();
+
+            Application.ApplicationExit += OnExit;
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

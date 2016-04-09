@@ -131,5 +131,59 @@ namespace resub
                 Dictlist.Add(new DictFile(dictionaries[i], dictionarynames[i]));
             }
         }
+
+        public static void save()
+        {
+            var dictionaries = new string[Dictlist.Count];
+            var dictionarynames = new string[Dictlist.Count];
+            for(int i = 0; i < Dictlist.Count; ++i)
+            {
+                dictionaries[i] = Dictlist[i].FileName;
+                dictionarynames[i] = Dictlist[i].Name;
+            }
+            StreamReader sr;
+            try
+            {
+                sr = new StreamReader(File.OpenRead("resub.conf"));
+            }
+            catch
+            {
+                MessageBox.Show("resub.conf not found");
+                System.Environment.Exit(1);
+                return;
+            }
+            string config = sr.ReadToEnd();
+            sr.Close();
+            string[] lines = config.Split('\n');
+            for (int i = 0; i < lines.Length; ++i)
+            {
+                //check for blank line or comment
+                if (lines[i].Length == 0 || lines[i][0] == '#') continue;
+                string[] parts = lines[i].Split('=');
+                if (parts.Length != 2) continue;
+                else if (parts[0] == "dictionaries")
+                {
+                    lines[i] = "dictionaries=";
+                    foreach(string x in dictionaries)
+                    {
+                        lines[i] += x + ",";
+                    }
+                    lines[i] = lines[i].Substring(0, lines[i].Length - 1);
+                }
+                else if(parts[0] == "dictionarynames")
+                {
+                    lines[i] = "dictionarynames=";
+                    foreach(string x in dictionarynames)
+                    {
+                        lines[i] += x + ",";
+                    }
+                    lines[i] = lines[i].Substring(0, lines[i].Length - 1);
+                    
+                }
+            }
+            StreamWriter sw = new StreamWriter(File.OpenWrite("resub.conf"));
+            foreach (string line in lines) sw.WriteLine(line);
+            sw.Close();
+        }
     }
 }
