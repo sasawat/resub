@@ -35,6 +35,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -58,10 +59,22 @@
     <Compile Include="IResuber.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="MKVToolsharp.cs" />
+    <Compile Include="NameDictionaryForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NameDictionaryForm.Designer.cs">
+      <DependentUpon>NameDictionaryForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Subtitle.cs" />
     <Compile Include="Transcription.cs" />
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NameDictionaryForm.resx">
+      <DependentUpon>NameDictionaryForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

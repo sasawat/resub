@@ -38,7 +38,7 @@
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.gbxOpt = new System.Windows.Forms.GroupBox();
             this.cbxIncludeOrigSubInOutput = new System.Windows.Forms.CheckBox();
-            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.lbxDict = new System.Windows.Forms.ListBox();
             this.label3 = new System.Windows.Forms.Label();
             this.btnNewDict = new System.Windows.Forms.Button();
             this.btnRemoveDict = new System.Windows.Forms.Button();
@@ -110,7 +110,7 @@
             this.gbxOpt.Controls.Add(this.btnRemoveDict);
             this.gbxOpt.Controls.Add(this.btnNewDict);
             this.gbxOpt.Controls.Add(this.label3);
-            this.gbxOpt.Controls.Add(this.listBox1);
+            this.gbxOpt.Controls.Add(this.lbxDict);
             this.gbxOpt.Controls.Add(this.cbxIncludeOrigSubInOutput);
             this.gbxOpt.Location = new System.Drawing.Point(15, 62);
             this.gbxOpt.Name = "gbxOpt";
@@ -129,13 +129,13 @@
             this.cbxIncludeOrigSubInOutput.Text = "Include original subtitles in output file";
             this.cbxIncludeOrigSubInOutput.UseVisualStyleBackColor = true;
             // 
-            // listBox1
+            // lbxDict
             // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(6, 74);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(468, 199);
-            this.listBox1.TabIndex = 1;
+            this.lbxDict.FormattingEnabled = true;
+            this.lbxDict.Location = new System.Drawing.Point(6, 74);
+            this.lbxDict.Name = "lbxDict";
+            this.lbxDict.Size = new System.Drawing.Size(468, 199);
+            this.lbxDict.TabIndex = 1;
             // 
             // label3
             // 
@@ -154,6 +154,7 @@
             this.btnNewDict.TabIndex = 3;
             this.btnNewDict.Text = "Load new dictionary file";
             this.btnNewDict.UseVisualStyleBackColor = true;
+            this.btnNewDict.Click += new System.EventHandler(this.btnNewDict_Click);
             // 
             // btnRemoveDict
             // 
@@ -163,6 +164,7 @@
             this.btnRemoveDict.TabIndex = 4;
             this.btnRemoveDict.Text = "Remove selected dictionary files";
             this.btnRemoveDict.UseVisualStyleBackColor = true;
+            this.btnRemoveDict.Click += new System.EventHandler(this.btnRemoveDict_Click);
             // 
             // btnStart
             // 
@@ -240,7 +242,7 @@
         private System.Windows.Forms.CheckBox cbxIncludeOrigSubInOutput;
         private System.Windows.Forms.Button btnNewDict;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.ListBox lbxDict;
         private System.Windows.Forms.Button btnRemoveDict;
         private System.Windows.Forms.Button btnStart;
         private System.Windows.Forms.Label label4;

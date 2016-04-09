@@ -1,20 +1,47 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using System.Windows.Forms;
+using System.Collections.Generic;
 
 namespace resub
 {
+    class DictFile
+    {
+        public string FileName { get; private set; }
+        public string Name { get; private set; }
+        public DictFile(string filename, string name)
+        {
+            FileName = filename;
+            Name = name;
+        }
+        public override string ToString()
+        {
+            return Name;
+        }
+    }
+
     internal static class Config
     {
-        public static string[] dictionaries;
-        public static string[] dictionarynames;
+        public static List<DictFile> Dictlist;
 
         public static void load()
         {
             //Read the config file
-            dictionaries = new string[0];
-            dictionarynames = new string[0];
-            StreamReader sr = new StreamReader(File.OpenRead("resub.conf"));
+            Dictlist = new List<DictFile>();
+            var dictionaries = new string[0];
+            var dictionarynames = new string[0];
+            StreamReader sr;
+            try
+            {
+                sr = new StreamReader(File.OpenRead("resub.conf"));
+            }
+            catch
+            {
+                MessageBox.Show("resub.conf not found");
+                System.Environment.Exit(1);
+                return;
+            }
             string config = sr.ReadToEnd();
             sr.Close();
             string[] lines = config.Split('\n');
@@ -84,24 +111,25 @@ namespace resub
                 Watson.User == "" ||
                 Watson.Pass == "" ||
                 MKVToolsharp.mkvmergepath == "" ||
-                MKVToolsharp.mkvextractpath == "" ||
-                dictionaries.Length == 0 ||
-                dictionarynames.Length == 0
+                MKVToolsharp.mkvextractpath == ""
                 )
             {
-                Console.WriteLine("Required Configuration Parameters Not Present");
-                Console.ReadKey();
+                MessageBox.Show("Required Configuration Parameters Not Present");
                 System.Environment.Exit(1);
             }
             //check for correct dictionary specification
             if(dictionaries.Length != dictionarynames.Length)
             {
-                Console.WriteLine("Number of dictionaries and dictionarynames do not correspond");
-                Console.ReadKey();
+                MessageBox.Show("Number of dictionaries and dictionarynames do not correspond");
                 System.Environment.Exit(1);
             }
             //Create the auth string
             Watson.AuthStr = Convert.ToBase64String(Encoding.ASCII.GetBytes(Watson.User + ":" + Watson.Pass));
+            //Create DictList
+            for(int i = 0; i < dictionaries.Length; ++i)
+            {
+                Dictlist.Add(new DictFile(dictionaries[i], dictionarynames[i]));
+            }
         }
     }
 }
