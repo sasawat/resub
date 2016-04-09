@@ -152,10 +152,10 @@ namespace resub
                 System.Environment.Exit(1);
                 return;
             }
-            string config = sr.ReadToEnd();
+            List<string> lines = new List<string>();
+            while (!sr.EndOfStream) lines.Add(sr.ReadLine());
             sr.Close();
-            string[] lines = config.Split('\n');
-            for (int i = 0; i < lines.Length; ++i)
+            for (int i = 0; i < lines.Count; ++i)
             {
                 //check for blank line or comment
                 if (lines[i].Length == 0 || lines[i][0] == '#') continue;
