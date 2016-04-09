@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using resub;
 
 namespace resubS
 {
@@ -14,6 +15,9 @@ namespace resubS
         [STAThread]
         static void Main()
         {
+            //Load configuration
+            Config.load();
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());

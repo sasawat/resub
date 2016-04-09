@@ -16,5 +16,22 @@ namespace resubS
         {
             InitializeComponent();
         }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonLoadMKV_Click(object sender, EventArgs e)
+        {
+            openFileDialog1.ShowDialog();
+            tbxInFileName.Text = openFileDialog1.FileName;
+        }
+
+        private void buttonSaveTo_Click(object sender, EventArgs e)
+        {
+            saveFileDialog1.ShowDialog();
+            tbxOutFileName.Text = saveFileDialog1.FileName;
+        }
     }
 }
