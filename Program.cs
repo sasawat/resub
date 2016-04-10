@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 using resub;
 
 namespace resubS
@@ -12,6 +13,12 @@ namespace resubS
         static void OnExit(object o, EventArgs e)
         {
             Config.save();
+            if (File.Exists("resubMaster.wav")) File.Delete("resubMaster.wav");
+            if (File.Exists(AudioChunkCollection.prefix)) File.Delete(AudioChunkCollection.prefix);
+            if (File.Exists("resub.ass")) File.Delete("resub.ass");
+            if (File.Exists("resub.aud")) File.Delete("resub.aud");
+            if (File.Exists("resubbed.ass")) File.Delete("resubbed.ass");
+            if (File.Exists("temp.mkv")) File.Delete("temp.mkv");
         }
 
         /// <summary>

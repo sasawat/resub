@@ -114,28 +114,28 @@
             this.gbxOpt.Controls.Add(this.cbxIncludeOrigSubInOutput);
             this.gbxOpt.Location = new System.Drawing.Point(15, 62);
             this.gbxOpt.Name = "gbxOpt";
-            this.gbxOpt.Size = new System.Drawing.Size(480, 287);
+            this.gbxOpt.Size = new System.Drawing.Size(327, 287);
             this.gbxOpt.TabIndex = 6;
             this.gbxOpt.TabStop = false;
             this.gbxOpt.Text = "Options";
             // 
             // btnRemoveDict
             // 
-            this.btnRemoveDict.Location = new System.Drawing.Point(295, 45);
+            this.btnRemoveDict.Location = new System.Drawing.Point(211, 45);
             this.btnRemoveDict.Name = "btnRemoveDict";
-            this.btnRemoveDict.Size = new System.Drawing.Size(179, 23);
+            this.btnRemoveDict.Size = new System.Drawing.Size(108, 23);
             this.btnRemoveDict.TabIndex = 4;
-            this.btnRemoveDict.Text = "Remove selected dictionary files";
+            this.btnRemoveDict.Text = "Remove dictionary";
             this.btnRemoveDict.UseVisualStyleBackColor = true;
             this.btnRemoveDict.Click += new System.EventHandler(this.btnRemoveDict_Click);
             // 
             // btnNewDict
             // 
-            this.btnNewDict.Location = new System.Drawing.Point(130, 45);
+            this.btnNewDict.Location = new System.Drawing.Point(114, 45);
             this.btnNewDict.Name = "btnNewDict";
-            this.btnNewDict.Size = new System.Drawing.Size(159, 23);
+            this.btnNewDict.Size = new System.Drawing.Size(91, 23);
             this.btnNewDict.TabIndex = 3;
-            this.btnNewDict.Text = "Load new dictionary file";
+            this.btnNewDict.Text = "Load dictionary";
             this.btnNewDict.UseVisualStyleBackColor = true;
             this.btnNewDict.Click += new System.EventHandler(this.btnNewDict_Click);
             // 
@@ -144,16 +144,16 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(7, 50);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(117, 13);
+            this.label3.Size = new System.Drawing.Size(101, 13);
             this.label3.TabIndex = 2;
-            this.label3.Text = "Choose Dictionary Files";
+            this.label3.Text = "Choose Dictionaries";
             // 
             // lbxDict
             // 
             this.lbxDict.FormattingEnabled = true;
             this.lbxDict.Location = new System.Drawing.Point(6, 74);
             this.lbxDict.Name = "lbxDict";
-            this.lbxDict.Size = new System.Drawing.Size(468, 199);
+            this.lbxDict.Size = new System.Drawing.Size(313, 199);
             this.lbxDict.TabIndex = 1;
             // 
             // cbxIncludeOrigSubInOutput
@@ -168,9 +168,9 @@
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(501, 62);
+            this.btnStart.Location = new System.Drawing.Point(351, 62);
             this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(271, 23);
+            this.btnStart.Size = new System.Drawing.Size(421, 23);
             this.btnStart.TabIndex = 7;
             this.btnStart.Text = "Start resub";
             this.btnStart.UseVisualStyleBackColor = true;
@@ -179,7 +179,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(503, 92);
+            this.label4.Location = new System.Drawing.Point(348, 92);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(37, 13);
             this.label4.TabIndex = 8;
@@ -187,18 +187,21 @@
             // 
             // progressBar
             // 
-            this.progressBar.Location = new System.Drawing.Point(546, 92);
+            this.progressBar.Location = new System.Drawing.Point(391, 92);
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(226, 23);
+            this.progressBar.Size = new System.Drawing.Size(381, 23);
             this.progressBar.TabIndex = 9;
             // 
             // tbxStatus
             // 
-            this.tbxStatus.Location = new System.Drawing.Point(502, 123);
+            this.tbxStatus.AcceptsReturn = true;
+            this.tbxStatus.Font = new System.Drawing.Font("MS Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.tbxStatus.Location = new System.Drawing.Point(348, 123);
             this.tbxStatus.Multiline = true;
             this.tbxStatus.Name = "tbxStatus";
             this.tbxStatus.ReadOnly = true;
-            this.tbxStatus.Size = new System.Drawing.Size(270, 212);
+            this.tbxStatus.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.tbxStatus.Size = new System.Drawing.Size(424, 212);
             this.tbxStatus.TabIndex = 10;
             // 
             // Form1

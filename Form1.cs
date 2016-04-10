@@ -73,9 +73,26 @@ namespace resubS
             }
         }
 
+        private void StatusPrint(string line)
+        {
+            tbxStatus.Text += line + Environment.NewLine;
+            tbxStatus.Select(tbxStatus.Text.Length - 1, 0);
+        }
+
+        private void StatusClear()
+        {
+            tbxStatus.Text = "";
+        }
+
         private void btnStart_Click(object sender, EventArgs e)
         {
-            progressBar.Value = 100;
+            //Reset the progress bar
+            progressBar.Value = 0;
+            //Clear the status box
+            StatusClear();
+            //Run!
+            Core.println = StatusPrint;
+            Core.run(tbxInFileName.Text, tbxOutFileName.Text, Config.Dictlist, false);
         }
     }
 }
