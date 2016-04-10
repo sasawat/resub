@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace resub
 {
@@ -11,10 +12,66 @@ namespace resub
     {
         public delegate void outputStatusLine(string line);
 
-        public static outputStatusLine println;
+        public outputStatusLine printlnfunc;
 
-        public static void run(string infile, string outfile, List<DictFile> dictionaries, bool interactive)
+        private bool IsAsync;
+        private bool IsInteractive;
+        private string Infile;
+        private string Outfile;
+        private int Progress;
+        private List<DictFile> Dictionaries;
+        public bool IsBusy { get; private set; }
+        public BackgroundWorker BW;
+
+        public void runAsync(string infile, string outfile, List<DictFile> dictionaries, ProgressChangedEventHandler pceh)
         {
+            if (IsBusy) return;
+            IsBusy = true;
+            IsAsync = true;
+            IsInteractive = false;
+            Infile = infile;
+            Outfile = outfile;
+            Dictionaries = dictionaries;
+            BW = new BackgroundWorker();
+            BW.WorkerReportsProgress = true;
+            BW.DoWork += new DoWorkEventHandler(doWorkHandler);
+            BW.ProgressChanged += pceh;
+            BW.RunWorkerCompleted += new RunWorkerCompletedEventHandler(runWorkerCompleted);
+            BW.RunWorkerAsync();
+        }
+
+        private void println(string line)
+        {
+            if (IsAsync) BW.ReportProgress(Progress, line);
+            else printlnfunc(line);
+        }
+
+        public void run(string infile, string outfile, List<DictFile> dictionaries, bool interactive)
+        {
+            if (IsBusy) return;
+            IsBusy = true;
+            IsAsync = false;
+            IsInteractive = interactive;
+            Infile = infile;
+            Outfile = outfile;
+            Dictionaries = dictionaries;
+            run();
+            IsBusy = false;
+        }
+
+        private void runWorkerCompleted(object sender, RunWorkerCompletedEventArgs args)
+        {
+            IsBusy = false;
+        }
+
+        private void doWorkHandler(object sender, DoWorkEventArgs x)
+        {
+            run();
+        }
+
+        public void run()
+        {
+            Progress = 0;
             println("=========================  resub  ========================");
             println("University of Michigan");
             println("ASIANLAN 124 - First Year Japanese through Anime and Manga");
@@ -22,32 +79,32 @@ namespace resub
             println("Sasawat Prankprakma (psasawat@umich.edu)\n\n");
 
             //Get files
-            if (infile == "")
+            if (Infile == "")
             {
-                if(!interactive)
+                if(!IsInteractive)
                 {
                     println("Error no input file specified");
                     return;
                 }
                 println("Input FileName\n> ");
-                infile = Console.ReadLine();
+                Infile = Console.ReadLine();
                 Console.Write("Output FileName (Default: InputFileName.resub.mkv)\n> ");
-                outfile = Console.ReadLine();
-                if (outfile == "")
+                Outfile = Console.ReadLine();
+                if (Outfile == "")
                 {
-                    outfile = infile + ".resub.mkv";
-                    println("Defaulting to output file: " + outfile);
+                    Outfile = Infile + ".resub.mkv";
+                    println("Defaulting to output file: " + Outfile);
                 }
             }
             else
             {
-                if (outfile == "")
+                if (Outfile == "")
                 {
-                    outfile = infile + ".resub.mkv";
-                    println("Defaulting to output file: " + outfile);
+                    Outfile = Infile + ".resub.mkv";
+                    println("Defaulting to output file: " + Outfile);
                 }
-                println("Input File: " + infile);
-                println("Output File: " + outfile);
+                println("Input File: " + Infile);
+                println("Output File: " + Outfile);
             }
             
             //Objects for resub
@@ -57,44 +114,50 @@ namespace resub
             bool fromfile;
 
             //See if we've already done a transcription
-            if (File.Exists(infile + ".ilog"))
+            if (File.Exists(Infile + ".ilog"))
             {
                 println("Found ilog from previous resub run");
                 fromfile = true;
-                var ilog = Log.ilogRead(infile + ".ilog");
+                var ilog = Log.ilogRead(Infile + ".ilog");
                 tc = ilog.Item2;
                 sc = ilog.Item1;
                 ac = new AudioChunkCollection();
                 //Extract tracks still needed
-                MKVToolsharp.extrackTracks(infile, "resub.aud", "resub.ass");
-
+                println("Demultiplexing Tracks");
+                MKVToolsharp.extrackTracks(Infile, "resub.aud", "resub.ass");
+                Progress = 70;
             }
             else //we haven't so we have to start afresh
             {
                 println("Demultiplexing Tracks");
                 fromfile = false;
                 //Extract tracks
-                MKVToolsharp.extrackTracks(infile, "resub.aud", "resub.ass");
+                MKVToolsharp.extrackTracks(Infile, "resub.aud", "resub.ass");
+                Progress = 10;
 
                 //Parse and transcribe
                 println("Parsing Subtitles");
                 sc = new SubtitleCollection("resub.ass");
+                Progress = 12;
                 println("Processing Audio");
                 ac = new AudioChunkCollection("resub.aud", sc);
+                Progress = 30;
                 println("Transcribing Lines");
                 tc = new TranscriptionCollection(ac);
+                Progress = 70;
             }
 
             //Write ilog so we don't waste time/money with transcription if we run again
-            if (!fromfile) Log.ilogWrite(infile + ".ilog", tc, sc, ac);
+            if (!fromfile) Log.ilogWrite(Infile + ".ilog", tc, sc, ac);
 
             //Resub!!
-            string mergeinto = infile;
-            foreach(DictFile dict in dictionaries)
+            string mergeinto = Infile;
+            foreach(DictFile dict in Dictionaries)
             {
                 println("Loading Dictionary: " + dict.FileName);
                 AllKnownResuber sr = new AllKnownResuber(dict.FileName);
                 SubtitleCollection outsub = sc.Clone();
+                Progress = 80;
 
                 println("resubing!");
                 for (int j = 0; j < sc.lines.Count; ++j)
@@ -108,10 +171,11 @@ namespace resub
 
                 //Merge everything together
                 println("Creating Output File");
-                MKVToolsharp.mergeSubtitles(mergeinto, "resubbed.ass", dict.Name, outfile);
+                MKVToolsharp.mergeSubtitles(mergeinto, "resubbed.ass", dict.Name, Outfile);
                 if (File.Exists("temp.mkv")) File.Delete("temp.mkv");
-                File.Copy(outfile, "temp.mkv");
+                File.Copy(Outfile, "temp.mkv");
                 mergeinto = "temp.mkv";
+                Progress = 90;
             }
             
             //Cleanup
@@ -122,6 +186,7 @@ namespace resub
             File.Delete("resubbed.ass");
             File.Delete("temp.mkv");
 
+            Progress = 100;
             println("DONE");
         }
     }

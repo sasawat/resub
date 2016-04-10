@@ -10,6 +10,8 @@ namespace resubS
 {
     static class Program
     {
+        public static Core ResubCore;
+
         static void OnExit(object o, EventArgs e)
         {
             Config.save();
@@ -27,6 +29,8 @@ namespace resubS
         [STAThread]
         static void Main()
         {
+            ResubCore = new Core();
+
             //Load configuration
             Config.load();
 

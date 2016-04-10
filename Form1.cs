@@ -84,6 +84,12 @@ namespace resubS
             tbxStatus.Text = "";
         }
 
+        private void updateProgressBar(object sender, ProgressChangedEventArgs pceh)
+        {
+            progressBar.Value = pceh.ProgressPercentage;
+            StatusPrint((string)pceh.UserState);
+        }
+
         private void btnStart_Click(object sender, EventArgs e)
         {
             //Reset the progress bar
@@ -91,8 +97,9 @@ namespace resubS
             //Clear the status box
             StatusClear();
             //Run!
-            Core.println = StatusPrint;
-            Core.run(tbxInFileName.Text, tbxOutFileName.Text, Config.Dictlist, false);
+            Program.ResubCore.printlnfunc = StatusPrint;
+            Program.ResubCore.runAsync(tbxInFileName.Text, tbxOutFileName.Text, 
+                Config.Dictlist, new ProgressChangedEventHandler(updateProgressBar));
         }
     }
 }
