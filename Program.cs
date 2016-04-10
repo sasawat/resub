@@ -27,7 +27,7 @@ namespace resubS
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
             ResubCore = new Core();
 
@@ -35,6 +35,16 @@ namespace resubS
             Config.load();
 
             Application.ApplicationExit += OnExit;
+
+            //Compile with Properties->Output Type->Console Application 
+            //to enable optional Command Line interface
+            if(args.Length != 0)
+            {
+                ResubCore.printlnfunc = Console.WriteLine;
+                if(args.Length == 2) ResubCore.run(args[0], args[1], Config.Dictlist, false);
+                if (args.Length == 1) ResubCore.run(args[0], "", Config.Dictlist, false);
+                return;
+            }
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
