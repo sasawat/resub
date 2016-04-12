@@ -25,6 +25,7 @@ namespace resubS
             {
                 lbxDict.Items.Add(x);
             }
+            cbxIncludeOrigSubInOutput.Checked = true;
         }
 
         private void buttonLoadMKV_Click(object sender, EventArgs e)
