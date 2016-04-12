@@ -26,6 +26,7 @@ namespace resubS
                 lbxDict.Items.Add(x);
             }
             cbxIncludeOrigSubInOutput.Checked = true;
+            cbxAllDict.Checked = true;
         }
 
         private void buttonLoadMKV_Click(object sender, EventArgs e)
@@ -54,6 +55,8 @@ namespace resubS
             //Add the DictFile
             Config.Dictlist.Add(new DictFile(filename, name));
             lbxDict.Items.Add(new DictFile(filename, name));
+            //Refresh checkbox
+            cbxAllDict.Checked = cbxAllDict.Checked;
         }
 
         private void btnRemoveDict_Click(object sender, EventArgs e)
@@ -99,8 +102,42 @@ namespace resubS
             StatusClear();
             //Run!
             Program.ResubCore.printlnfunc = StatusPrint;
-            Program.ResubCore.runAsync(tbxInFileName.Text, tbxOutFileName.Text, 
-                Config.Dictlist, !cbxIncludeOrigSubInOutput.Checked, new ProgressChangedEventHandler(updateProgressBar));
+            if (cbxAllDict.Checked)
+            {
+                Program.ResubCore.runAsync(tbxInFileName.Text, tbxOutFileName.Text,
+                    Config.Dictlist, !cbxIncludeOrigSubInOutput.Checked, 
+                    new ProgressChangedEventHandler(updateProgressBar));
+            }
+            else
+            {
+                var tempdictlist = new List<DictFile>();
+                foreach(var x in lbxDict.SelectedItems)
+                {
+                    tempdictlist.Add((DictFile)x);
+                }
+                Program.ResubCore.runAsync(tbxInFileName.Text, tbxOutFileName.Text,
+                    tempdictlist, !cbxIncludeOrigSubInOutput.Checked,
+                    new ProgressChangedEventHandler(updateProgressBar));
+            }
+        }
+
+        private void disableDictionarySelection()
+        {
+            for (int i = 0; i < lbxDict.Items.Count; ++i) lbxDict.SetSelected(i, true);
+            lbxDict.Enabled = false;
+        }
+
+        private void enableDictionarySelection()
+        {
+            lbxDict.Enabled = true;
+            lbxDict.SelectionMode = SelectionMode.MultiExtended;
+            lbxDict.ClearSelected();
+        }
+
+        private void cbxAllDict_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbxAllDict.Checked) disableDictionarySelection();
+            else enableDictionarySelection();
         }
     }
 }

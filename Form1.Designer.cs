@@ -46,6 +46,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.tbxStatus = new System.Windows.Forms.TextBox();
+            this.cbxAllDict = new System.Windows.Forms.CheckBox();
             this.gbxOpt.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -107,6 +108,7 @@
             // 
             // gbxOpt
             // 
+            this.gbxOpt.Controls.Add(this.cbxAllDict);
             this.gbxOpt.Controls.Add(this.btnRemoveDict);
             this.gbxOpt.Controls.Add(this.btnNewDict);
             this.gbxOpt.Controls.Add(this.label3);
@@ -153,7 +155,7 @@
             this.lbxDict.FormattingEnabled = true;
             this.lbxDict.Location = new System.Drawing.Point(6, 74);
             this.lbxDict.Name = "lbxDict";
-            this.lbxDict.Size = new System.Drawing.Size(313, 199);
+            this.lbxDict.Size = new System.Drawing.Size(313, 173);
             this.lbxDict.TabIndex = 1;
             // 
             // cbxIncludeOrigSubInOutput
@@ -204,6 +206,17 @@
             this.tbxStatus.Size = new System.Drawing.Size(424, 212);
             this.tbxStatus.TabIndex = 10;
             // 
+            // cbxAllDict
+            // 
+            this.cbxAllDict.AutoSize = true;
+            this.cbxAllDict.Location = new System.Drawing.Point(6, 255);
+            this.cbxAllDict.Name = "cbxAllDict";
+            this.cbxAllDict.Size = new System.Drawing.Size(149, 17);
+            this.cbxAllDict.TabIndex = 5;
+            this.cbxAllDict.Text = "Use all loaded dictionaries";
+            this.cbxAllDict.UseVisualStyleBackColor = true;
+            this.cbxAllDict.CheckedChanged += new System.EventHandler(this.cbxAllDict_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -252,6 +265,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.TextBox tbxStatus;
+        private System.Windows.Forms.CheckBox cbxAllDict;
     }
 }
 
