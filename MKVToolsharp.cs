@@ -89,6 +89,28 @@ namespace resub
             mkvextract.WaitForExit();
         }
 
+        public static void stripSubtitles(string mkvFileName, string mkvOutName)
+        {
+            //Create mkvmerge process
+            Process mkvmerge = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = "mkvmerge.exe",
+                    Arguments = "-o " + mkvOutName + " --no-subtitles " + mkvFileName,
+                    UseShellExecute = false,
+                    RedirectStandardOutput = false,
+                    RedirectStandardInput = false,
+                    CreateNoWindow = true
+                }
+            };
+            
+            //Start process
+            mkvmerge.Start();
+            mkvmerge.WaitForExit();
+ 
+        }
+
         public static void mergeSubtitles(string mkvFileName, string subFileName, string subTitle, string mkvOutName)
         {
             //Create mkvmerge process

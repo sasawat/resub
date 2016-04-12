@@ -16,6 +16,7 @@ namespace resub
 
         private bool IsAsync;
         private bool IsInteractive;
+        private bool DoStrip;
         private string Infile;
         private string Outfile;
         private int Progress;
@@ -23,12 +24,14 @@ namespace resub
         public bool IsBusy { get; private set; }
         public BackgroundWorker BW;
 
-        public void runAsync(string infile, string outfile, List<DictFile> dictionaries, ProgressChangedEventHandler pceh)
+        public void runAsync(string infile, string outfile, 
+            List<DictFile> dictionaries, bool stripOriginalSubs, ProgressChangedEventHandler pceh)
         {
             if (IsBusy) return;
             IsBusy = true;
             IsAsync = true;
             IsInteractive = false;
+            DoStrip = stripOriginalSubs;
             Infile = infile;
             Outfile = outfile;
             Dictionaries = dictionaries;
@@ -51,6 +54,7 @@ namespace resub
             if (IsBusy) return;
             IsBusy = true;
             IsAsync = false;
+            DoStrip = false;
             IsInteractive = interactive;
             Infile = infile;
             Outfile = outfile;
@@ -152,6 +156,11 @@ namespace resub
 
             //Resub!!
             string mergeinto = Infile;
+            if(DoStrip)
+            {
+                MKVToolsharp.stripSubtitles(Infile, "temp.mkv");
+                mergeinto = "temp.mkv";
+            }
             foreach(DictFile dict in Dictionaries)
             {
                 println("Loading Dictionary: " + dict.FileName);

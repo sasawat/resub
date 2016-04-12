@@ -99,7 +99,7 @@ namespace resubS
             //Run!
             Program.ResubCore.printlnfunc = StatusPrint;
             Program.ResubCore.runAsync(tbxInFileName.Text, tbxOutFileName.Text, 
-                Config.Dictlist, new ProgressChangedEventHandler(updateProgressBar));
+                Config.Dictlist, !cbxIncludeOrigSubInOutput.Checked, new ProgressChangedEventHandler(updateProgressBar));
         }
     }
 }
