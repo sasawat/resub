@@ -81,9 +81,20 @@ namespace resub
             println("ASIANLAN 124 - First Year Japanese through Anime and Manga");
             println("W16 Final Project");
             println("Sasawat Prankprakma (psasawat@umich.edu)\n\n");
-
+            string infilestrip = Infile;
+            while(infilestrip.Contains("\""))
+            {
+                int rmndx = infilestrip.IndexOf('"');
+                infilestrip = infilestrip.Remove(rmndx, 1);
+            }
+            string outfilestrip = Outfile;
+            while(outfilestrip.Contains("\""))
+            {
+                int rmndx = outfilestrip.IndexOf('"');
+                outfilestrip = outfilestrip.Remove(rmndx, 1);
+            }
             //Get files
-            if (Infile == "")
+            if (infilestrip == "")
             {
                 if(!IsInteractive)
                 {
@@ -102,9 +113,10 @@ namespace resub
             }
             else
             {
-                if (Outfile == "")
+                if (outfilestrip == "")
                 {
-                    Outfile = Infile + ".resub.mkv";
+                    outfilestrip = infilestrip + ".resub.mkv";
+                    Outfile = "\"" + outfilestrip + "\"";
                     println("Defaulting to output file: " + Outfile);
                 }
                 println("Input File: " + Infile);
@@ -118,17 +130,17 @@ namespace resub
             bool fromfile;
 
             //See if we've already done a transcription
-            if (File.Exists(Infile + ".ilog"))
+            if (File.Exists(infilestrip + ".ilog"))
             {
                 println("Found ilog from previous resub run");
                 fromfile = true;
-                var ilog = Log.ilogRead(Infile + ".ilog");
+                var ilog = Log.ilogRead(infilestrip + ".ilog");
                 tc = ilog.Item2;
                 sc = ilog.Item1;
                 ac = new AudioChunkCollection();
                 //Extract tracks still needed
                 println("Demultiplexing Tracks");
-                MKVToolsharp.extrackTracks(Infile, "resub.aud", "resub.ass");
+                MKVToolsharp.extrackTracks(infilestrip, "resub.aud", "resub.ass");
                 Progress = 70;
             }
             else //we haven't so we have to start afresh
@@ -136,7 +148,7 @@ namespace resub
                 println("Demultiplexing Tracks");
                 fromfile = false;
                 //Extract tracks
-                MKVToolsharp.extrackTracks(Infile, "resub.aud", "resub.ass");
+                MKVToolsharp.extrackTracks(infilestrip, "resub.aud", "resub.ass");
                 Progress = 10;
 
                 //Parse and transcribe
@@ -152,13 +164,13 @@ namespace resub
             }
 
             //Write ilog so we don't waste time/money with transcription if we run again
-            if (!fromfile) Log.ilogWrite(Infile + ".ilog", tc, sc, ac);
+            if (!fromfile) Log.ilogWrite(infilestrip + ".ilog", tc, sc, ac);
 
             //Resub!!
-            string mergeinto = Infile;
+            string mergeinto = infilestrip;
             if(DoStrip)
             {
-                MKVToolsharp.stripSubtitles(Infile, "temp.mkv");
+                MKVToolsharp.stripSubtitles(infilestrip, "temp.mkv");
                 mergeinto = "temp.mkv";
             }
             foreach(DictFile dict in Dictionaries)
@@ -180,9 +192,9 @@ namespace resub
 
                 //Merge everything together
                 println("Creating Output File");
-                MKVToolsharp.mergeSubtitles(mergeinto, "resubbed.ass", dict.Name, Outfile);
+                MKVToolsharp.mergeSubtitles(mergeinto, "resubbed.ass", dict.Name, outfilestrip);
                 if (File.Exists("temp.mkv")) File.Delete("temp.mkv");
-                File.Copy(Outfile, "temp.mkv");
+                File.Copy(outfilestrip, "temp.mkv");
                 mergeinto = "temp.mkv";
                 Progress = 90;
             }

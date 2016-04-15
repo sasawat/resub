@@ -24,7 +24,7 @@ namespace resub
                 {
                     FileName = "mkvmerge.exe",
                     //FileName = "ping.exe",
-                    Arguments = "-i " + mkvFileName,
+                    Arguments = "-i \"" + mkvFileName + "\"",
                     UseShellExecute = false, //we want to start the executable
                     RedirectStandardOutput = true,
                     CreateNoWindow = true
@@ -97,7 +97,7 @@ namespace resub
                 StartInfo = new ProcessStartInfo
                 {
                     FileName = "mkvmerge.exe",
-                    Arguments = "-o " + mkvOutName + " --no-subtitles " + mkvFileName,
+                    Arguments = "-o \"" + mkvOutName + "\" --no-subtitles \"" + mkvFileName + "\"",
                     UseShellExecute = false,
                     RedirectStandardOutput = false,
                     RedirectStandardInput = false,
@@ -119,7 +119,7 @@ namespace resub
                 StartInfo = new ProcessStartInfo
                 {
                     FileName = "mkvmerge.exe",
-                    Arguments = "-o " + mkvOutName + " " + mkvFileName + " --track-name 0:" + subTitle + " " + subFileName,
+                    Arguments = "-o \"" + mkvOutName + "\" \"" + mkvFileName + "\" --track-name 0:" + subTitle + " " + subFileName,
                     UseShellExecute = false,
                     RedirectStandardOutput = false,
                     RedirectStandardInput = false,

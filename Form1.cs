@@ -104,7 +104,7 @@ namespace resubS
             Program.ResubCore.printlnfunc = StatusPrint;
             if (cbxAllDict.Checked)
             {
-                Program.ResubCore.runAsync(tbxInFileName.Text, tbxOutFileName.Text,
+                Program.ResubCore.runAsync("\"" + tbxInFileName.Text + "\"" , "\"" + tbxOutFileName.Text + "\"",
                     Config.Dictlist, !cbxIncludeOrigSubInOutput.Checked, 
                     new ProgressChangedEventHandler(updateProgressBar));
             }
@@ -115,7 +115,7 @@ namespace resubS
                 {
                     tempdictlist.Add((DictFile)x);
                 }
-                Program.ResubCore.runAsync(tbxInFileName.Text, tbxOutFileName.Text,
+                Program.ResubCore.runAsync("\"" + tbxInFileName.Text + "\"" , "\"" + tbxOutFileName.Text + "\"",
                     tempdictlist, !cbxIncludeOrigSubInOutput.Checked,
                     new ProgressChangedEventHandler(updateProgressBar));
             }

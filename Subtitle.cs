@@ -142,7 +142,7 @@ namespace resub
             FileStream ofile = File.OpenWrite("resubbed.ass");
             FileStream orig = File.OpenRead(file);
             StreamReader read = new StreamReader(orig);
-            StreamWriter write = new StreamWriter(ofile);
+            StreamWriter write = new StreamWriter(ofile, Encoding.UTF8);
             int filelnno = 0;
             int sublndx = 0;
             while (!read.EndOfStream)
