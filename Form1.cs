@@ -21,6 +21,7 @@ namespace resubS
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            Config.load();
             foreach(DictFile x in Config.Dictlist)
             {
                 lbxDict.Items.Add(x);

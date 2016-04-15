@@ -31,8 +31,6 @@ namespace resubS
         {
             ResubCore = new Core();
 
-            //Load configuration
-            Config.load();
 
             Application.ApplicationExit += OnExit;
 
@@ -40,6 +38,8 @@ namespace resubS
             //to enable optional Command Line interface
             if(args.Length != 0)
             {
+                //Load configuration
+                Config.load();
                 ResubCore.printlnfunc = Console.WriteLine;
                 if(args.Length == 2) ResubCore.run(args[0], args[1], Config.Dictlist, false);
                 if (args.Length == 1) ResubCore.run(args[0], "", Config.Dictlist, false);

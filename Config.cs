@@ -58,7 +58,11 @@ namespace resub
                 if (parts[0] == "watson_user")
                 {
                     Watson.User = parts[1];
-                    if (Watson.User[Watson.User.Length - 1] == '\r')
+                    if(Watson.User == "")
+                    {
+                        MessageBox.Show("Watson Authentication Information Not Present. Please see README.");
+                    }
+                    else if (Watson.User[Watson.User.Length - 1] == '\r')
                     {
                         Watson.User = Watson.User.Substring(0, Watson.User.Length - 1);
                     }
@@ -66,7 +70,11 @@ namespace resub
                 else if (parts[0] == "watson_pass")
                 {
                     Watson.Pass = parts[1];
-                    if (Watson.Pass[Watson.Pass.Length - 1] == '\r')
+                    if(Watson.Pass == "")
+                    {
+                        MessageBox.Show("Watson Authentication Information Not Present. Please see README.");
+                    }
+                    else if (Watson.Pass[Watson.Pass.Length - 1] == '\r')
                     {
                         Watson.Pass = Watson.Pass.Substring(0, Watson.Pass.Length - 1);
                     }
